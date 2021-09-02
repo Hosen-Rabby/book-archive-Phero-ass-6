@@ -4,12 +4,14 @@ const search = () =>{
 
 	const searchField = document.getElementById('search_field');
 	const searchText = searchField.value;
+
+	// clear search field
 	searchField.value = '';
 	const url = `http://openlibrary.org/search.json?q=${searchText}`;
-	// console.log(url);
+
 	fetch(url)
-		.then(res => res.json())
-		.then(data => grabProperties(data));
+	.then(res => res.json())
+	.then(data => grabProperties(data));
 
 }
 
@@ -18,8 +20,18 @@ const search = () =>{
 const grabProperties = (properties) =>{
 	const totalFound = properties;
 	const searchTotal = document.getElementById('search_total');
+
+	// clear inner html
 	searchTotal.innerHTML = '';
+
+	
+	const addItems = document.getElementById('add_items');
+
+	// clear item fields
+	addItems.innerHTML = '';
+
 	const div = document.createElement('div');
+
 	// count search result
 	if(totalFound.numFound > 0 ){
 		div.innerHTML = `
@@ -38,8 +50,6 @@ const grabProperties = (properties) =>{
 	const totalItems = properties.docs;
 	console.log(properties.docs);
 
-	const addItems = document.getElementById('add_items');
-	addItems.innerHTML = '';
 
 	// looping for each elements
 
@@ -52,6 +62,8 @@ const grabProperties = (properties) =>{
 		const firstPublish = item.first_publish_year;
 		const cover = item.cover_i;
 
+		// cover image
+
 		const url = `https://covers.openlibrary.org/b/id/${cover}-M.jpg`;
 
 		const div = document.createElement('div');
@@ -61,17 +73,15 @@ const grabProperties = (properties) =>{
 		
 		div.innerHTML = `
 		<div>
-			<img src="${url}" class="img-fluid" alt="No Image Found">
-			<h4>${itemTitle}</h4>
-			<p>Author: ${authorName}</p>
-			<p>Publisher: ${publisherSelect}</p>
-			<p>First published: ${firstPublish}</p>
+		<img src="${url}" class="img-fluid" alt="No Image Found">
+		<h4>${itemTitle}</h4>
+		<p>Author: ${authorName}</p>
+		<p>Publisher: ${publisherSelect}</p>
+		<p>First published: ${firstPublish}</p>
 		</div>
 		`;
-		// addItems.innerHTML = '';
 
 		addItems.appendChild(div);
 	});
-
 
 }
